@@ -1,0 +1,52 @@
+class Solution {
+public:
+    //Using Stack + BitString
+    //Time Complexity: O(n);
+    bool parseBoolExpr(string ex) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        stack<char>st;
+        char tmp;
+        for(auto it : ex){
+            if(it=='('||it==','){
+                continue;
+            }
+            else if(it=='&'||it=='|'||it=='!'||it=='t'||it=='f'){
+                st.push(it);
+            }
+            else if(it==')'){
+                bool flagF = false,flagT = false;
+                while(!st.empty()&&st.top()!='&'&&st.top()!='|'&&st.top()!='!'){
+                    char cTop = st.top();
+                    st.pop();
+                    if(cTop=='t') flagT = true;
+                    if(cTop=='f') flagF = true;
+                }
+                if(!st.empty()){
+                    char op = st.top();
+                    st.pop();
+                    if(op=='!'){
+                        tmp = flagT?'f':'t';
+                    }
+                    else if(op=='&'){
+                        if(!flagT&&flagF){
+                            tmp = 'f';
+                        }
+                        else if(flagT&&flagF){
+                            tmp = 'f';
+                        }
+                        else if(flagT&&!flagF){
+                            tmp = 't';
+                        }
+                    }
+                    else if(op=='|'){
+                        tmp = (flagT?'t':'f');
+                    }
+                    st.push(tmp);
+                }
+            }
+        }
+        return (st.top()=='t'?1:0);
+    }
+};
