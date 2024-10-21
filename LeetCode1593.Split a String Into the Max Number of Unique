@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void solve(unordered_map<string,int>&count,int index,string s,int n,int &ans){
+        if(index==n){
+            ans = (count.size()>ans?count.size():ans);
+            return;
+        }
+        for(int i = index;i<n;++i){
+            string temp = s.substr(index,i-index+1);
+            if(count.find(temp)==count.end()){
+                count[temp]++;
+                solve(count,i+1,s,n,ans);
+                count[temp]--;
+                if(count[temp]==0){
+                    count.erase(temp);
+                }
+            }
+        }
+    }
+    int maxUniqueSplit(string s) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int n = s.size();
+        int ans = 1;
+        unordered_map<string,int>count;
+        count.clear();
+        solve(count,0,s,n,ans);
+        return ans;
+    }
+};
