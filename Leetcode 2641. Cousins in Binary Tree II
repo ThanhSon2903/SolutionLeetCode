@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {n
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        if(root==NULL) return root;
+        queue<TreeNode*>q;
+        q.push(root);
+        vector<int>ace;
+        while(!q.empty()){
+            int n = q.size();
+            int sumLevel = 0;
+            for(int i=0;i<n;++i){
+                TreeNode *tmp = q.front();
+                q.pop();
+                sumLevel+=tmp->val;
+                if(tmp->left!=NULL) q.push(tmp->left);
+                if(tmp->right!=NULL) q.push(tmp->right);
+            }
+            ace.push_back(sumLevel);
+        }
+        int idx = 1;
+        q.push(root);
+        root->val = 0;
+        while(!q.empty()){
+            int n = q.size();
+            for(int i=0;i<n;++i){
+                TreeNode *tmp = q.front();
+                q.pop();
+                int totalCurrent = ((tmp->left!=NULL)?tmp->left->val:0) +  ((tmp->right!=NULL)?tmp->right->val:0);
+                if(tmp->left!=NULL){
+                    q.push(tmp->left);
+                    tmp->left->val = ace[idx] - totalCurrent;
+                }
+                if(tmp->right!=NULL){
+                    q.push(tmp->right);
+                    tmp->right->val = ace[idx] - totalCurrent;
+                }
+            }
+            idx++;
+        }
+        return root;
+    }
+};
