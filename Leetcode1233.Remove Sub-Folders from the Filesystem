@@ -1,0 +1,41 @@
+//using trie + sort (O(logN))
+class Solution {
+public:
+    struct node{
+        node *child[256] = {NULL};
+        bool check;
+        node(){
+            check = false;
+        };
+    };
+    node *temp = new node();
+    bool add(const string &s){
+        node *root = temp;
+        for(int i=0;i<(int)s.size();i++){
+            int k = (int)s[i];
+            if(!root->child[k]){
+                root->child[k] = new node();
+            }
+            root = root->child[k];
+            if(root->check&&s[i+1]=='/'){
+                return false;
+            }
+        }
+        root->check = 1;
+        return 1;
+    }
+    vector<string> removeSubfolders(vector<string>& folder) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        sort(begin(folder),end(folder));
+        vector<string>a;
+        for(const auto &it : folder){
+            if(add(it)){
+                a.push_back(it);
+            }
+        }        
+        return a;
+
+    }
+};
