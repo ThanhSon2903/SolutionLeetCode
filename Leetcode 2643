@@ -1,0 +1,29 @@
+class Solution {
+//Dp tabletion ==> O(n*m);
+public:
+    #define ll long long
+    #define fast() ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+    const int msize = 101;
+    ll solve(vector<int>&robot,vector<vector<int>>&factory,int i,int j,vector<vector<vector<ll>>>&dp){
+        if(i>=robot.size()) return 0;
+        if(j>=factory.size()) return LLONG_MAX;
+        if(dp[i][j][factory[j][1]]!=-1) return dp[i][j][factory[j][1]];
+        ll temp = solve(robot,factory,i,j+1,dp);
+        ll ok = 1e18;
+        if(factory[j][1]>0){
+            int d = abs(robot[i]-factory[j][0]);
+            factory[j][1]--;
+            ok = d + solve(robot,factory,i+1,j,dp);
+            factory[j][1]++;
+        }
+        return dp[i][j][factory[j][1]] = min(temp,ok);
+    }
+    ll minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+        fast();
+        int n = robot.size(),m = factory.size();
+        sort(robot.begin(),robot.end());
+        sort(factory.begin(),factory.end());
+        vector<vector<vector<ll>>>dp(n,vector<vector<ll>>(m,vector<ll>(101,-1)));
+        return solve(robot,factory,0,0,dp);
+    }
+};
