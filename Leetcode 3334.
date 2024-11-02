@@ -1,0 +1,57 @@
+*/
+Runtime: 22ms not Fast
+Constraints:
+  1 <= nums.length <= 100
+  1 <= nums[i] <= 30
+*/
+class Solution {
+public:
+    #define ll long long
+    #define endl '\n'
+    ll factor(ll a, ll b) {
+        if (b == 0) return a;
+        return factor(b, a % b);
+    }
+    
+    ll solve_gcd(vector<int>& nums) {
+        ll gcd_val = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            gcd_val = factor(gcd_val, (ll)nums[i]);
+        }
+        return gcd_val;
+    }
+    
+    ll solve_lcm(vector<int>& nums) {
+        ll lcm = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            lcm = (lcm * nums[i]) / factor(lcm, (ll)nums[i]);
+        }
+        return lcm;
+    }
+    
+    long long maxScore(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        
+        if(nums.size() == 1) return nums[0] * nums[0] * 1ll;
+        
+        sort(nums.begin(), nums.end());
+        ll gcd = solve_gcd(nums);
+        ll lcm = solve_lcm(nums);
+        ll total = gcd * lcm;
+        
+        for(int i = 0; i < nums.size(); i++) {
+            vector<int> res;
+            for(int j = 0; j < nums.size(); j++) {
+                if (i != j) {
+                    res.push_back(nums[j]);
+                }
+            }
+            ll val1 = solve_gcd(res);
+            ll val2 = solve_lcm(res);
+            total = max(total, val1 * val2*1ll);
+        }
+        return total;
+    }
+};
