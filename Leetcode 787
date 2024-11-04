@@ -1,0 +1,31 @@
+//Using BFS + adj List
+class Solution {
+public:
+    #define fastIO() ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        fastIO();
+        vector<vector<pair<int,int>>>adj(n);
+        for(vector<int>&v : flights){
+            adj[v[0]].push_back({v[1],v[2]});
+        }
+        vector<int>cost(n,INT_MAX);
+        queue<vector<int>>q;
+        q.push({src,0,0});//src + money + k(so diem dung)
+        while(!q.empty()){
+            vector<int>tmp = q.front();
+            q.pop();
+            int root = tmp[0];
+            int money = tmp[1];
+            int st = tmp[2];
+            if(st>k) continue;
+            for(const pair<int,int>&it : adj[root]){
+                if(it.second + money < cost[it.first]){
+                    cost[it.first] = it.second + money;
+                    q.push({it.first,cost[it.first],st+1});
+                }
+            }
+        }
+        if(cost[dst]==INT_MAX) return -1;
+        return cost[dst];
+    }
+};
