@@ -1,0 +1,24 @@
+//TimeComplexity: O(nlog(n)),rumtime: 100ms
+//Idea: Sort + Bits
+class Solution {
+public:
+    bool canSortArray(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int idx = 0;
+        for(int i=1;i<nums.size();++i){
+            int bitA = __builtin_popcount(nums[i-1]);
+            int bitB = __builtin_popcount(nums[i]);
+            if(bitA!=bitB){
+                sort(nums.begin()+idx,nums.begin()+i);
+                idx = i;
+            }
+        }
+        sort(nums.begin()+idx,nums.end());
+        for(int i=1;i<nums.size();i++){
+            if(nums[i-1]>nums[i]) return false;
+        }
+        return true;
+    }
+};
