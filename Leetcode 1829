@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Solution {
+public:
+    vector<int> getMaximumXor(vector<int>& nums, int bit) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int n = nums.size();
+        vector<int>ans(n);
+        vector<int>prefix(n);
+        prefix[0] = nums[0];
+        for(int i=1;i<nums.size();++i){
+            prefix[i] = prefix[i-1] ^ nums[i];//calc prefix 
+        }
+        // int masking = (1<<bit) - 1;
+        //example: bit = 2 => masking = 3
+        for(auto it : prefix) cout << it << ' ';
+        for(int i=0;i<n;i++){
+            ans[i] = ((1<<bit) - 1) ^ prefix[n-i-1];
+        }
+        return ans;
+    }
+};
