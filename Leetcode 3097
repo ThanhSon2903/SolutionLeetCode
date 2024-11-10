@@ -1,0 +1,48 @@
+//Time Complexity: 0(n)
+//RunTime: 35ms
+class Solution {
+public:
+    void solve(int num,vector<uint32_t>&bits){
+        int len = bits.size();
+        int end = len-1;
+        while(num>0){
+            if(num&1) bits[end]+=1;
+            end--;
+            num>>=1;
+        }
+    }
+    void solve2(int num,vector<uint32_t>&bits){
+        int len = bits.size();
+        int end = len-1;
+        while(num>0){
+            if(num&1) bits[end]-=1;
+            end--;
+            num>>=1;
+        }
+    }
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+        int n = nums.size(),ans = INT_MAX;
+        vector<uint32_t>bits(32,0);
+        uint32_t currOr = 0;
+        int l = 0;
+        for(int r=0;r<n;r++){
+            if(nums[r]>k) return 1;
+            solve(nums[r],bits);
+            currOr|=nums[r];
+            while(currOr>=k&&l<=r){
+                ans = min(ans,(r-l)+1);
+                solve2(nums[l],bits);
+                currOr = 0;///Reset = 0;
+                for(int m=0;m<=31;m++){
+                    if(bits[m]>0){
+                        currOr|=(1<<(31-m));
+                    }
+                }
+                l++;
+            }
+        }
+        if(ans==INT_MAX) return -1;
+        return ans;
+    }
+};
