@@ -1,0 +1,43 @@
+class Solution {
+public:
+    void sieve(vector<int>&primes,int val){
+        vector<bool>check(val+1,true);
+        check[0] = false;
+        check[1] = false;
+        for(int i=2;i<=sqrt(val);i++){
+            if(check[i]){
+                for(int j=i*i;j<=val;j+=i){
+                    check[j] = false;
+                }
+            }
+        }
+        for(int i=2;i<=val;i++){
+            if(check[i]) primes.push_back(i);
+        }
+    }
+    bool primeSubOperation(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        bool dd = true;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]<nums[i-1]||nums[i]==nums[i-1]){
+                dd = false;
+                break;
+            }
+        }
+        if(dd) return true;
+        vector<int>primes;
+        sieve(primes,*max_element(nums.begin(),nums.end()));
+        if(primes.size()==1) return false;
+        for(int i=nums.size()-2;i>=0;i--){
+            if(nums[i] >= nums[i+1]){
+                auto iter = upper_bound(primes.begin(),primes.end(),abs(nums[i]-nums[i+1]));
+                if(iter=primes.end()) return false;
+                else nums[i]-=*iter;
+            }
+            if(nums[i]<=0) return false;
+        }
+        return true;
+    }   
+};
