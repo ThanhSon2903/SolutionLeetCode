@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int dd(vector<int>& nums,int l,int r){
+        bool ok = false;
+        int tmp = 0;
+        for(int i=l+1;i<=r;++i){
+            if(nums[i]-nums[i-1]==1&&nums[i]>nums[i-1]){
+                ok = true;
+                tmp = nums[i];
+            }
+            else if(nums[i]-nums[i-1]!=1||nums[i]<nums[i-1]){
+                ok = false;
+                break;
+            }
+        }
+        if(ok) return tmp;
+        return -1;
+    }
+    vector<int> resultsArray(vector<int>& nums, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(0);
+        cout.tie(0);
+        int n = nums.size();
+        vector<int>ans(n-k+1,-1);
+        if(k==1) return nums;
+        if(n==1) return {nums.back()};
+        for(int i=0;i<n-k+1;++i){
+            ans[i] = dd(nums,i,i+k-1);
+        }
+        return ans;
+    }
+};
