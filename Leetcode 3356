@@ -1,0 +1,48 @@
+/*
+Idea: Using Bineary search + LineSweep => Time: 0(N+Q); Run time: 52ms
+*/
+class Solution {
+public:
+    #define endl '\n'
+    static bool check(vector<int>&nums,vector<vector<int>>&q,int mid){
+        int n = nums.size();
+        vector<int>fre(n + 1, 0);
+        for(int i=0;i<mid;++i){
+            int l = q[i][0],r = q[i][1],val = q[i][2];
+            fre[l]-=val; // Cho phần tử bắt đầu - đi val
+            fre[r+1]+=val; // Cho phần tử sau phần tử kết thúc + val.
+        }
+        if(n>1){
+            for(int i=1;i<n;++i){
+                fre[i]+=fre[i-1];
+            }
+        }
+        for(int i=0;i<nums.size();++i){
+            if(nums[i]+fre[i]>0) return false;
+        }
+        return true;
+    }
+    int minZeroArray(vector<int>& nums, vector<vector<int>>& q) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        bool dd = true;
+        for(auto it : nums){
+            if(it!=0){
+                dd = false;
+                break;
+            }
+        }
+        if(dd) return 0;
+        int ans = -1,l = 0,r = q.size();
+        while(l<=r){
+            int mid = (r+l)/2;   //Tìm xem với mid truy vấn thì có thể làm cho mảng về 0 được ko?
+            if(check(nums,q,mid)){
+                ans = mid;
+                r = mid-1;      //Tìm kiếm sang trái xem có còn ko!
+            }
+            else l = mid+1;
+        }
+        return ans!=-1?ans:-1;
+    }
+};
