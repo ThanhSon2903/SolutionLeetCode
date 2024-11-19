@@ -1,0 +1,43 @@
+//BinearySearch + Sliding Window.
+//Time: 0(Log(n)).
+class Solution {
+public:
+    static bool isOk(vector<int>&cnt,int k){
+        if(cnt[0]>=k&&cnt[1]>=k&&cnt[2]>=k) return true;
+        return false;
+    }
+    static bool check(const string &s,int k,int mid){
+        vector<int>cnt(3,0);
+        for(int i=0;i<mid;++i) cnt[s[i]-'a']++;//Ban đầu chọn toàn bộ bên trái
+        if(isOk(cnt,k)) return true;
+        int n = s.size(),giveLeft = mid-1,giveRight = n-1;
+        while(giveLeft>=0){
+            cnt[s[giveLeft]-'a']--;
+            cnt[s[giveRight]-'a']++;//Chọn bên phải
+            if(isOk(cnt,k)) return true;
+            giveLeft--;
+            giveRight--;
+        }
+        return false;
+    }
+    int takeCharacters(string s, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        // vector<int>fre(3,0);
+        //for(auto &it : s) fre[it-'a']++;
+        //if(fre[0]<k||fre[1]<k||fre[2]<k) return -1;
+        int l = 0,r = s.size(),ans = -1;
+        while(l<=r){
+            int mid = (r+l)/2;
+            if(check(s,k,mid)){
+                ans = mid;
+                r = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+        return (ans==-1?-1:ans);
+    }
+};
