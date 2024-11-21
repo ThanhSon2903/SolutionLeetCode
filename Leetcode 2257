@@ -1,0 +1,51 @@
+class Solution {
+public:
+    #define notOk 0
+    #define OK 1
+    #define G 2
+    #define W 3
+    void dfs(int i,int j,vector<vector<int>>&v,char move){
+        if(i<0||i>=v.size()||j<0||j>=v[0].size()||v[i][j]==G||v[i][j]==W){
+            return;
+        }
+        v[i][j] = OK;
+        if(move=='D') dfs(i+1,j,v,'D');
+        if(move=='U') dfs(i-1,j,v,'U');
+        if(move=='L') dfs(i,j-1,v,'L');
+        if(move=='R') dfs(i,j+1,v,'R');
+    }
+    int countUnguarded(int n, int m, vector<vector<int>>& guards, vector<vector<int>>& walls) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        vector<vector<int>>v(n,vector<int>(m,notOk));
+        for(const auto &it : guards){
+            v[it[0]][it[1]] = G;
+        }
+        for(const auto &it : walls){
+            v[it[0]][it[1]] = W;
+        }
+        int ans = 0;
+        for(int i=0;i<v.size();++i){
+            for(int j=0;j<v[0].size();++j){
+                if(v[i][j]==G){
+                    dfs(i+1,j,v,'D');
+                    dfs(i-1,j,v,'U');
+                    dfs(i,j-1,v,'L');
+                    dfs(i,j+1,v,'R');
+                }
+            }
+        }
+        for(int i=0;i<v.size();++i){
+            for(int j=0;j<v[0].size();++j){
+                if(v[i][j]==notOk){
+                    ans++;
+                    // cout << v[i][j];
+                }
+                // cout << v[i][j];
+            }
+            // cout << endl;
+        }
+        return ans;
+    }
+};
