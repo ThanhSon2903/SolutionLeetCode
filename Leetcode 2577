@@ -1,0 +1,50 @@
+/*
+Algorithm: Dijiktra
+Giải thích line 37:
+  + Khi mà sự chênh lệch giữa thời gian đến và giá trị tại ô cần truy cập là chẵn thì chúng ta cần phải tăng giá trị tại ô đó lên 1 
+  + Còn không thì chúng ta giữ nguyên
+*/
+class Solution {
+public:
+    const int dx[4] = {-1,0,1,0};
+    const int dy[4] = {0,1,0,-1};
+    #define boost() ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+    #define endl '\n'
+    static bool check(int i,int j,int n,int m){
+        return i>=0&&j>=0&&i<=n-1&&j<=m-1;
+    }
+    int minimumTime(vector<vector<int>>& grid) {
+        boost();
+        if(grid[0][1]>1&grid[1][0]>1) return -1; 
+        int n = grid.size(),m = grid[0].size();
+        vector<vector<int>>record(n,vector<int>(m,INT_MAX));
+        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>>pq;
+        pq.push({grid[0][0],0,0});
+        // cout << 0 << " " << 0 << endl;
+        while(!pq.empty()){
+            vector<int>tmp = pq.top();
+            pq.pop();
+            int time = tmp[0],i = tmp[1],j = tmp[2];
+            if(i==n-1&&j==m-1) return time;
+            for(int k=0;k<4;++k){
+                int im = i+dx[k];
+                int jm = j+dy[k];
+                int changeTime;
+                if(check(im,jm,n,m)){
+                    int timeMinAccess = grid[im][jm] - time;//Sự chênh lệch giữa thời gian đến và giá trị tại ô cần truy cập
+                    if(time>=grid[im][jm]){//Nếu tg đến >= giá trị ô đó => truy cập
+                        changeTime = time+1;
+                    }
+                    else{
+                        changeTime = (timeMinAccess%2==0?grid[im][jm]+1:grid[im][jm]);
+                    }
+                    if(changeTime<record[im][jm]){
+                        record[im][jm] = changeTime;
+                        pq.push({changeTime,im,jm});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
