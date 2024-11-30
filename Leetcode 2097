@@ -1,0 +1,57 @@
+//Using Chu trinh Euler
+class Solution {
+public:
+    #define boost() ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);
+    // void dfs(int node,vector<int>&ok,unordered_map<int,deque<int>>&adj){
+    //     while(!adj[node].empty()){
+    //         int top_Node = adj[node].front();
+    //         adj[node].pop_front();
+    //         dfs(top_Node,ok,adj);
+    //     }
+    //     ok.push_back(node);
+    // }
+    vector<vector<int>> validArrangement(vector<vector<int>>& p) {
+        boost();
+        int n = p.size(),m = p[0].size();
+        unordered_map<int,deque<int>>adj;
+        unordered_map<int,int>in,out;
+        for(const auto &it : p){
+            adj[it[0]].push_back(it[1]);
+            out[it[0]]++;
+            in[it[1]]++;
+        }
+        int st;
+        bool dd = false;
+        for(const auto &it : out){
+            if(out[it.first]>in[it.first]){
+                dd = true;
+                st = it.first;
+                break;
+            }
+        }
+        if(!dd){
+            st = p[0][0];
+        }
+        stack<int>s;
+        s.push(st);
+        vector<int>ok;
+        while(!s.empty()){
+            int node = s.top();
+            if(!adj[node].empty()){
+                int nodeNext = adj[node].front();
+                adj[node].pop_front();
+                s.push(nodeNext);
+            }
+            else{
+                ok.push_back(node);
+                s.pop();
+            }
+        }
+        reverse(ok.begin(),ok.end());
+        vector<vector<int>>res;
+        for(int i=0;i<ok.size()-1;++i){
+            res.push_back({ok[i],ok[i+1]});
+        }
+        return res;
+    }
+};
