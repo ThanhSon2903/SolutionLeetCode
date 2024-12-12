@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findSubstringInWraproundString(string s) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int c[26] = {0};
+        int temp = 1,res = 0;
+        for(int i=0;i<s.size();++i){
+            cout << temp << ' ';
+            if(c[s[i]-'a']==0){
+                c[s[i]-'a'] = temp;
+            }
+            else c[s[i]-'a'] = max(temp,c[s[i]-'a']);
+            if(i+1<s.size()&&((s[i]=='z'&&s[i+1]=='a')||(s[i+1]-s[i]==1))) temp++;
+            else temp = 1;//reset
+        }
+        for(auto &it : c) res+=it;
+        return res;
+    }
+};
