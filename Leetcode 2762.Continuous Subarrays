@@ -1,0 +1,21 @@
+class Solution {
+public:
+    long long continuousSubarrays(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        multiset<int>mts;
+        int l = 0,r = 0;
+        long long res = 0;
+        while(r<nums.size()){
+            mts.insert(nums[r]);
+            while(*mts.rbegin()-*mts.begin()>2&&l<=r){
+                mts.erase(mts.find(nums[l]));
+                l++;
+            }
+            res+=r-l+1;
+            ++r;
+        }
+        return res;
+    }
+};
