@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxStarSum(vector<int>& vals, vector<vector<int>>& edges, int k) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int sz = vals.size();
+        unordered_map<int, vector<int>> adj;
+        for (auto &it : edges) {
+            adj[it[0]].push_back(vals[it[1]]);
+            adj[it[1]].push_back(vals[it[0]]);
+        }
+        long long ans = LLONG_MIN;
+        for (int i = 0; i < sz; ++i) {
+            vector<int> tmp = adj[i];
+            sort(tmp.rbegin(), tmp.rend());
+            long long can = vals[i];
+            if(!tmp.empty()){
+                for (int j = 0; j < min(k, (int)tmp.size()); ++j) {
+                    if (tmp[j] > 0) { 
+                        can += (long long)tmp[j];
+                    }
+                }   
+            }
+            ans = max(ans, can);
+        }
+        return ans;
+    }
+};
