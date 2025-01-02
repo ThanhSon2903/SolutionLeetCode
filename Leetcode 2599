@@ -1,0 +1,34 @@
+/*
+Time Complexity: O(N+Q);
+Run Times: 1ms;
+Idea: PrefixSum + check(str.front()&&str.back());
+*/
+class Solution {
+public:
+    static bool vowel(const char &c){
+        return (c=='a'||c=='e'||c=='i'||c=='o'||c=='u');
+    }
+    static bool ok(const string &str){
+        return vowel(str.front())&&vowel(str.back());
+    }
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int n = words.size() + 1;
+        vector<int>prefixSum(n,0);
+        for(int i=0;i<words.size();++i){
+            if(ok(words[i])){
+                prefixSum[i+1] = prefixSum[i] + 1; 
+            }
+            else prefixSum[i+1] = prefixSum[i]; 
+        }
+        vector<int>ans(queries.size());
+        int i = 0;
+        for(const auto &it : queries){
+            int li = it[0],ri = it[1];
+            ans[i++] = prefixSum[ri+1] - prefixSum[li];
+        }
+        return ans;
+    }
+};
