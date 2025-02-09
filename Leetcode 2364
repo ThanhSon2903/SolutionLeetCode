@@ -1,0 +1,24 @@
+class Solution {
+public:
+    #define ll long long
+    long long countBadPairs(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        ll n = nums.size();
+        ll s = n*(n-1) / 2;
+        unordered_map<ll,ll>mp;
+        for(int i=0;i<nums.size();++i){
+            mp[nums[i] - i]++;
+        }
+        ll temp = 0;
+        for(auto it : mp){
+            if(it.second > 1){
+                temp+=(ll)(it.second*(it.second-1) / 2);
+            }
+        }
+        return s - temp;
+    }
+};
+
+
