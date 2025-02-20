@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool check = false;
+    string temp = "";
+    bool solve(unordered_set<string>& s, int n, string &curr) {
+        if (curr.size() >= n) {
+            if (s.find(curr) == s.end()) {
+                temp = curr;
+                return true;
+            }
+            return false;
+        }
+        
+        for (char i = '0'; i <= '1'; ++i) {
+            curr += i;
+            if (solve(s, n, curr)) return true;
+            curr.pop_back();
+        }
+        
+        return false;
+    }
+    string findDifferentBinaryString(vector<string>& nums) {
+        unordered_set<string> s;
+        for (auto &it : nums) s.insert(it);
+        string curr = "";
+        if (!solve(s, nums.back().size(), curr)) {
+            temp = "";
+            check = false;
+            return "";
+        }
+        else{
+            string res = temp;
+            check = false;
+            temp = "";
+            return res;
+        }   
+        return "";
+    }
+};
