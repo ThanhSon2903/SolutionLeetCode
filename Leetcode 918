@@ -1,0 +1,37 @@
+class Solution {
+public:
+    #define ll long long
+    const int INF = 1e15;
+    const int MOD = 1000000009LL;
+
+    int findMax(const vector<int>&nums){
+        int temp = nums[0],ans = nums[0];
+        for(int i=1;i<nums.size();i++){
+            temp = max(nums[i],temp+nums[i]);
+            ans = max(ans,temp);
+        }
+        return ans;
+    }
+
+    int findMin(const vector<int>&nums){
+        int temp = nums[0],ans = nums[0];
+        for(int i=1;i<nums.size();i++){
+            temp = min(nums[i],temp+nums[i]);
+            ans = min(ans,temp);
+        }
+        return ans;
+    }
+
+    //Công thức mảng xoay tròn lớn nhất: tổng mảng - tổng mảng con nhỏ nhất;
+    -> ans = max(currMax,currCircularMax)
+    int maxSubarraySumCircular(vector<int>& nums) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        int currMax = findMax(nums),currMin = findMin(nums),totalArr = 0;
+        if(currMax<0) return currMax;
+        for(const auto &it : nums) totalArr+=it; 
+        cout << totalArr<< " " << currMax << " " << currMin;
+        return max(currMax,totalArr-currMin);
+    }
+};
