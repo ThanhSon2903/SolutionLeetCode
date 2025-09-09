@@ -1,0 +1,39 @@
+/*
+Day la bai quy hoach dong
+*/
+class Solution {
+public:
+    const int mod = 1e9 + 7;
+    #define ll long long
+    int peopleAwareOfSecret(int n, int delay, int forget) {
+        vector<int>dp(n+1,0);// So luong nguoi biet ngay i
+        dp[1] = 1;
+        ll share = 0;
+        // cout << dp[1] << endl;
+        for(int i=2;i<=n;i++){
+            if(i - delay >= 1){
+                share = (share + dp[i-delay]) % mod;
+            }   
+            if(i - forget >= 1){
+                share = (share - dp[i-forget] + mod) % mod;
+            }
+            dp[i] = share;
+        }
+        ll res = 0;
+        for(int i=n-forget+1;i<=n;i++){
+            if(dp[i] >= 1) res = (res + dp[i]) % mod;
+        }
+        return res;
+    }
+};
+
+// ngay 1 : A biet
+// ngay 2 : A biet
+// ngay 3 : A share B (2)
+// ngay 4 : A share C (loai A)
+// ngay 5:  B share D (loai A)
+// ngay 6: B share E,C share F
+// ngay 7: C share G,D share H
+
+// C D E F G H
+
