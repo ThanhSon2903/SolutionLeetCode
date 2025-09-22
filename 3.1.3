@@ -1,0 +1,23 @@
+x = -pi : 0.1 : pi;
+figure;
+
+y = sin(x);
+subplot(1,2,1);
+plot(x,y,'b-','LineWidth',1.5);
+title("Ham y = sin(x)");
+xlabel("x");ylabel("y = sin(x)");
+grid on;
+
+
+subplot(1,2,2);
+plot(x,sin(x),'b-','LineWidth',1.5);
+hold on;
+% z = cos(x);
+plot(x,cos(x),'r--','LineWidth',1.5);
+% temp = 0.5 * sin(2 * x) 
+plot(x,0.5 * sin(2 * x) ,'k:','LineWidth',1.5);
+hold off;
+legend('sin(x)','cos(x)','0.5·sin(2x)');
+title('Nhieu do thi tren cung 1 truc');
+xlabel('x'); ylabel('y');
+grid on;
